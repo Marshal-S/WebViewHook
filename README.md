@@ -1,0 +1,5 @@
+# WebViewHook
+
+主要演示UIWebView和WKWebView的拦截案例
+
+UIWebView已经被系统抛弃，可以作为参考，将原有项目调整为WKWebView的相关代码
