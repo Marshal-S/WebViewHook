@@ -49,9 +49,10 @@
     WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
     wkWebConfig.userContentController = wkUController;
     
-    //可以点进去查看，通过webView的类方法handlesURLScheme来检查url可用性,无效的url会导致崩溃
-    //处理崩溃，由于调用类方法继承不可以，可以通过hook来处理，避免自定义拦截标准出现出现崩溃
-    //标准的urlscheme是没有问题的,可以点入方法参考标准，例如：www.baidu.com
+    //可以点进去查看，通过webView的类方法handlesURLScheme来检查url可用性,无效的URLScheme会导致崩溃(例如:http)
+    //处理崩溃，由于调用类方法继承不可以，可以通过分类+hook来处理(或者主动方法的hook和交换)，避免自定义拦截标准出现出现崩溃
+    //标准的urlscheme是没有问题的,可以点方法进入查看参考标准，例如：www.baidu.com
+    //这里可以自行创建专门处理拦截业务的代理类，将self替换之，并实现WKURLSchemeHandler协议即可
     [wkWebConfig setURLSchemeHandler:self forURLScheme:@"www.baidu.com"];
     [wkWebConfig setURLSchemeHandler:self forURLScheme:@"https"];
     [wkWebConfig setURLSchemeHandler:self forURLScheme:@"http"];
@@ -93,7 +94,7 @@
     [task resume];
 }
 
-//通知停止加载该url，这里一般不做处理，否则可能会引起异常，暂时未发现走这里
+//通知停止加载该url，这里不做处理，否则可能会引起异常，暂时未发现走这里
 - (void)webView:(WKWebView *)webView stopURLSchemeTask:(id <WKURLSchemeTask>)urlSchemeTask {
     NSLog(@"%@", urlSchemeTask.request.URL.absoluteString);
 }

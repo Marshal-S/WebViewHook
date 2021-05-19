@@ -7,8 +7,6 @@
 
 #import "LSURLProtocol.h"
 
-static NSString * const LSPropertyKey = @"LSPropertyKey";
-
 @interface LSURLProtocol ()
 
 
@@ -17,6 +15,7 @@ static NSString * const LSPropertyKey = @"LSPropertyKey";
 
 @implementation LSURLProtocol
 
+//是否能够处理给定的请求，自行出行返回YES，否则返回NO
 + (BOOL)canInitWithRequest:(NSURLRequest *)request {
     NSLog(@"%@", request.URL.absoluteString);
     //拦截百度的logo
@@ -35,13 +34,12 @@ static NSString * const LSPropertyKey = @"LSPropertyKey";
     return NO;
 }
 
-//必须实现，用于在URL缓存中查找对象，可以检查NSURLRequest对象之间的相等性,一般返回request
+//必须实现，规范化URL请求，一般返回request
 + (NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request {
     return request;
 }
 
-//这个方法主要用来判断两个请求是否是同一个请求，
-// 如果是，则可以使用缓存数据，通常只需要调用父类的实现即可,默认为YES,而且一般不在这里做事情
+//用于检测两个请求是缓存等效的，则为YES，否则为NO
 //+ (BOOL)requestIsCacheEquivalent:(NSURLRequest *)a toRequest:(NSURLRequest *)b {
 //    return [super requestIsCacheEquivalent:a toRequest:b];
 //}
